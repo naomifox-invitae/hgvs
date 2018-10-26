@@ -1,13 +1,18 @@
 *hgvs* - manipulate biological sequence variants according to Human Genome Variation Society recommendations
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+**Important:** biocommons packages (including hgvs) will begin phasing
+out support for Python 2.7 on Jan 1, 2019.  `More
+<https://groups.google.com/forum/#!topic/hgvs-discuss/iLUzjzoD-28>`__
+
+
 The *hgvs* package provides a Python library to parse, format,
 validate, normalize, and map sequence variants according to `Variation
 Nomenclature`_ (aka Human Genome Variation Society) recommendations.
 
 +--------------------+--------------------------------------------------------------------+
 | **Information**    | | |rtd|   |changelog|  |github_license|                            |
-|                    | | |gitter|   |group|                                               |
+|                    | | |gitter|   |group|     |getting_help|                            |
 +--------------------+--------------------------------------------------------------------+
 | **Latest Release** | |github_tag|   |pypi_rel|                                          |
 +--------------------+--------------------------------------------------------------------+
@@ -167,12 +172,8 @@ NCBI and Ensembl.
 
    # formatting can be customized, e.g., use 1 letter amino acids to
    # format a specific variant
+   # (configuration may also be set globally)
    >>> var_p.format(conf={"p_3_letter": False})
-   'NP_001628.1:p.G528R'
-
-   # configuration may also be set globally
-   >>> hgvs.global_config.formatting.p_3_letter = False
-   >>> str(var_p)
    'NP_001628.1:p.G528R'
 
 
@@ -215,6 +216,10 @@ There are `more examples in the documentation
 Citing hgvs (the package)
 @@@@@@@@@@@@@@@@@@@@@@@@@
 
+| **hgvs: A Python package for manipulating sequence variants using HGVS nomenclature: 2018 Update.**
+| Wang M, Callenberg KM, Dalgleish R, Fedtsov A, Fox N, Freeman PJ, Jacobs KB, Kaleta P, McMurry AJ, Prlić A, Rajaraman V, Hart RK
+| Human Mutation. 2018 `Pubmed <https://www.ncbi.nlm.nih.gov/pubmed/30129167>`_ | `Open Access PDF <https://doi.org/10.1002/humu.23615>`_
+
 | **A Python Package for Parsing, Validating, Mapping, and Formatting Sequence Variants Using HGVS Nomenclature.**
 | Hart RK, Rico R, Hare E, Garcia J, Westbrook J, Fusaro VA.
 | *Bioinformatics*. 2014 Sep 30. `PubMed <http://www.ncbi.nlm.nih.gov/pubmed/25273102>`_ | `Open Access PDF <http://bioinformatics.oxfordjournals.org/content/31/2/268.full.pdf>`_
@@ -242,6 +247,8 @@ Other packages that manipulate HGVS variants:
 .. _docs: http://hgvs.readthedocs.org/
 .. _Variation Nomenclature: http://varnomen.hgvs.org/
 
+.. |getting_help| image:: https://img.shields.io/badge/!-help%20me-red.svg
+   :target: https://hgvs.readthedocs.io/en/stable/getting_help.html
 
 .. |rtd| image:: https://img.shields.io/badge/docs-readthedocs-green.svg
    :target: http://hgvs.readthedocs.io/
@@ -295,7 +302,6 @@ Other packages that manipulate HGVS variants:
 .. |github_contrib| image:: https://img.shields.io/github/contributors/biocommons/hgvs.svg
    :alt: GitHub license
    :target: https://github.com/biocommons/hgvs/graphs/contributors/
-
 
 
 .. |install_status| image:: https://travis-ci.org/reece/hgvs-integration-test.png?branch=master

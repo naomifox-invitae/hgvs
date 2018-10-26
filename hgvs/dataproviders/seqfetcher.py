@@ -41,9 +41,11 @@ class SeqFetcher(object):
                 return sr.fetch(ac, start_i, end_i)
 
             self.fetcher = _fetch_seq_seqrepo
+            self.source = "local (SeqRepo)"
             logger.info("Using SeqRepo({}) sequence fetching".format(seqrepo_dir))
         else:
             self.fetcher = bioutils.seqfetcher.fetch_seq
+            self.source = "remote (bioutils.seqfetcher)"
             logger.info("Using remote sequence fetching")
 
     def fetch_seq(self, ac, start_i=None, end_i=None):
@@ -54,7 +56,7 @@ class SeqFetcher(object):
 
 
 # <LICENSE>
-# Copyright 2013-2015 HGVS Contributors (https://github.com/biocommons/hgvs)
+# Copyright 2018 HGVS Contributors (https://github.com/biocommons/hgvs)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

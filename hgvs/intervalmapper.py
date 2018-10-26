@@ -44,10 +44,14 @@ start_i and minimal end_i.
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import logging
 import re
 
 from hgvs.exceptions import HGVSInvalidIntervalError
 from six.moves import range
+
+_logger = logging.getLogger(__name__)
+_logger.warning("This module is deprecated and will be removed in a future release")
 
 
 # N.B. This Interval is internal to intervalmapper.py. It is *NOT* the
@@ -187,7 +191,7 @@ def cigar_to_intervalpairs(cigar):
     number of CIGAR operations
     """
 
-    cigar_elem_re = re.compile("(?P<len>\d+)(?P<op>[=DIMNX])")
+    cigar_elem_re = re.compile(r"(?P<len>\d+)(?P<op>[=DIMNX])")
     ces = [
         CIGARElement(op=md["op"], len=int(md["len"])) for md in [m.groupdict() for m in cigar_elem_re.finditer(cigar)]
     ]
@@ -201,7 +205,7 @@ def cigar_to_intervalpairs(cigar):
 
 
 # <LICENSE>
-# Copyright 2013-2015 HGVS Contributors (https://github.com/biocommons/hgvs)
+# Copyright 2018 HGVS Contributors (https://github.com/biocommons/hgvs)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

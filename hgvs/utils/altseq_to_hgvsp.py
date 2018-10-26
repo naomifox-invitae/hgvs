@@ -79,32 +79,21 @@ class AltSeqToHgvsp(object):
                         variants.append({"start": start + 1, "ins": insertion, "del": deletion})
                         do_delins = False
 
-                elif (self._alt_seq[self._alt_data.variant_start_aa - 1] == "*"
-                      and self._ref_seq[self._alt_data.variant_start_aa - 1] != "*"):
-                    # introduced stop codon
-                    deletion = self._ref_seq[self._alt_data.variant_start_aa - 1:]
-                    variants.append({"start": self._alt_data.variant_start_aa, "ins": "*", "del": deletion})
-                    do_delins = False
-
             if do_delins:
                 if self._alt_data.is_frameshift:
                     start = self._alt_data.variant_start_aa - 1
-                    aa_start = self._alt_data.variant_start_aa
                     while self._ref_seq[start] == self._alt_seq[start]:
                         start += 1
-                        aa_start += 1
                     insertion = list(self._alt_seq[start:])
                     deletion = list(self._ref_seq[start:])
-                    variants.append({"start": aa_start, "ins": insertion, "del": deletion})
+                    variants.append({"start": start + 1, "ins": insertion, "del": deletion})
 
                 else:    # non-frameshifting delins or dup
                     # get size diff from diff in ref/alt lengths
                     start = self._alt_data.variant_start_aa - 1
-                    aa_start = self._alt_data.variant_start_aa
                     delta = len(self._alt_seq) - len(self._ref_seq)
                     while self._ref_seq[start] == self._alt_seq[start]:
                         start += 1
-                        aa_start += 1
                     offset = start + abs(delta)
 
                     if delta > 0:    # net insertion
@@ -125,12 +114,14 @@ class AltSeqToHgvsp(object):
 
                     # from start, get del/ins out to last difference
                     diff_indices = [i for i in range(len(ref_sub)) if ref_sub[i] != alt_sub[i]]
+                    if not diff_indices and not deletion and insertion[0] == '*':
+                        diff_indices.append(0)
                     if diff_indices:
                         max_diff = diff_indices[-1] + 1
                         insertion.extend(list(alt_sub[:max_diff]))
                         deletion.extend(list(ref_sub[:max_diff]))
 
-                    variants.append({"start": aa_start, "ins": insertion, "del": deletion})
+                    variants.append({"start": start + 1, "ins": insertion, "del": deletion})
 
             if DBG:
                 print(variants)
@@ -348,7 +339,7 @@ class AltSeqToHgvsp(object):
 
 
 # <LICENSE>
-# Copyright 2013-2015 HGVS Contributors (https://github.com/biocommons/hgvs)
+# Copyright 2018 HGVS Contributors (https://github.com/biocommons/hgvs)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

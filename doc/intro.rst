@@ -91,21 +91,12 @@ Related tools
   package.
 
 
-Getting Help
-@@@@@@@@@@@@
+Support
+@@@@@@@
 
-There are several ways to get help with the `hgvs` package.
-
-The `hgvs-discuss mailing list
-<https://groups.google.com/forum/#!forum/hgvs-discuss>`_ is the preferred
-way to reach the `hgvs` package authors.  Please file bugs and feature
-requests on the `hgvs issue tracker
-<https://github.com/biocommons/hgvs/issues>`_.
-
-If you have questions about the `Variation Nomenclature
-Recommendations <http://varnomen.hgvs.org/>`_, consider posting your
-questions to the `HGVS Facebook page
-<https://www.facebook.com/HGVSmutnomen>`_.
+See the section :doc:`getting_help` for information about connecting
+with the community, asking questions, and :ref:`filing bug reports
+correctly<bug-reports>`.
 
 
 Links
@@ -119,6 +110,11 @@ Links
 
 References
 @@@@@@@@@@
+
+hgvs: A Python package for manipulating sequence variants using HGVS nomenclature: 2018 Update.
+  | Wang M, Callenberg KM, Dalgleish R, Fedtsov A, Fox N, Freeman PJ, Jacobs KB, Kaleta P, McMurry AJ, Prlić A, Rajaraman V, Hart RK
+  | Human Mutation. 2018
+  | https://www.ncbi.nlm.nih.gov/pubmed/30129167
 
 A Python package for parsing, validating, mapping and formatting sequence variants using HGVS nomenclature.
   | Hart RK, Rico R, Hare E, Garcia J, Westbrook J, Fusaro VA

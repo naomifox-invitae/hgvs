@@ -50,7 +50,7 @@ class TestGrammarFull(unittest.TestCase):
     def test_parser_test_completeness(self):
         """ensure that all rules in grammar have tests"""
 
-        grammar_rule_re = re.compile("^(\w+)")
+        grammar_rule_re = re.compile(r"^(\w+)")
         grammar_fn = pkg_resources.resource_filename(__name__, "../hgvs/_data/hgvs.pymeta")
         with open(grammar_fn, "r") as f:
             grammar_rules = set(r.group(1) for r in filter(None, map(grammar_rule_re.match, f)))
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     unittest.main()
 
 # <LICENSE>
-# Copyright 2013-2015 HGVS Contributors (https://github.com/biocommons/hgvs)
+# Copyright 2018 HGVS Contributors (https://github.com/biocommons/hgvs)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
