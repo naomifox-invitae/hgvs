@@ -11,8 +11,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import math
 
-from Bio.Seq import Seq
-from bioutils.sequences import reverse_complement
+from bioutils.sequences import reverse_complement, translate_cds
 
 from ..edit import (NARefAlt, Dup, Inv, Repeat)
 from ..enums import Datum
@@ -58,10 +57,8 @@ class AltTranscriptData(object):
             if isinstance(seq, six.string_types):
                 seq = list(seq)
             seq_cds = seq[cds_start - 1:]
-            if len(seq_cds) % 3 != 0:    # padding so biopython won't complain during the conversion
-                seq_cds.extend(['N'] * ((3 - len(seq_cds) % 3) % 3))
             seq_cds = ''.join(seq_cds)
-            seq_aa = str(Seq(seq_cds).translate())
+            seq_aa = translate_cds(seq_cds, full_codons=False, ter_symbol="X")
             stop_pos = seq_aa[:(cds_stop - cds_start + 1) // 3].rfind("*")
             if stop_pos == -1:
                 stop_pos = seq_aa.find("*")
@@ -147,10 +144,12 @@ class AltSeqBuilder(object):
             if self._var_c.posedit.edit.type == "del":
                 edit_type = WHOLE_GENE_DELETED
             elif self._var_c.posedit.edit.type == "dup":
-                _logger.warning("Whole-gene duplication; consequence assumed to not affect protein product")
+                _logger.warning(
+                    "Whole-gene duplication; consequence assumed to not affect protein product")
                 edit_type = NOT_CDS
             elif self._var_c.posedit.edit.type == "inv":
-                _logger.warning("Whole-gene inversion; consequence assumed to not affect protein product")
+                _logger.warning(
+                    "Whole-gene inversion; consequence assumed to not affect protein product")
                 edit_type = NOT_CDS
             else:
                 edit_type = NOT_CDS
@@ -160,7 +159,8 @@ class AltSeqBuilder(object):
         try:
             this_alt_data = type_map[edit_type]()
         except KeyError:
-            raise NotImplementedError("c to p translation unsupported for {} type {}".format(self._var_c, edit_type))
+            raise NotImplementedError("c to p translation unsupported for {} type {}".format(
+                self._var_c, edit_type))
 
         # get the start of the "terminal" frameshift (i.e. one never "cancelled out")
         this_alt_data = self._get_frameshift_start(this_alt_data)
@@ -212,7 +212,8 @@ class AltSeqBuilder(object):
         ref = self._var_c.posedit.edit.ref
         alt = self._var_c.posedit.edit.alt
         ref_length = end - start if ref is not None else 0    # can't just get from ref since ref isn't always known
-        alt_length = len(self._var_c.posedit.edit.alt) if self._var_c.posedit.edit.alt is not None else 0
+        alt_length = len(
+            self._var_c.posedit.edit.alt) if self._var_c.posedit.edit.alt is not None else 0
         net_base_change = alt_length - ref_length
         cds_stop += net_base_change
 
@@ -285,7 +286,8 @@ class AltSeqBuilder(object):
 
     def _incorporate_repeat(self):
         """Incorporate repeat int sequence"""
-        raise NotImplementedError("hgvs c to p conversion does not support {} type: repeats".format(self._var_c))
+        raise NotImplementedError("hgvs c to p conversion does not support {} type: repeats".format(
+            self._var_c))
 
     def _setup_incorporate(self):
         """Helper to setup incorporate functions
@@ -339,8 +341,13 @@ class AltSeqBuilder(object):
 
     def _create_no_protein(self):
         """Create a no-protein result"""
-        alt_data = AltTranscriptData(
-            [], None, None, False, None, self._transcript_data.protein_accession, is_ambiguous=False)
+        alt_data = AltTranscriptData([],
+                                     None,
+                                     None,
+                                     False,
+                                     None,
+                                     self._transcript_data.protein_accession,
+                                     is_ambiguous=False)
         return alt_data
 
     def _get_frameshift_start(self, variant_data):
